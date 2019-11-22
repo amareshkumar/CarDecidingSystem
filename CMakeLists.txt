@@ -11,14 +11,18 @@ else()
 set(ENV{CMAKE_SOURCE_DIR} C:/kamaresh/CarDecidingSystem)
 endif (UNIX)
 
-project(FirstCar)
+project(CarDecidingSystem)
 
 # Set the output folder where your program will be created
 set(CMAKE_BINARY_DIR ${CMAKE_BINARY_DIR}/bin)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
-file(GLOB_RECURSE SRC_FILES ${CMAKE_SOURCE_DIR}/*.cpp ${CMAKE_SOURCE_DIR}/*.hpp ${CMAKE_SOURCE_DIR}/*.h)
+#add source group		
+source_group ("source" ${CMAKE_BINARY_DIR}/source)
+source_group ("include" ${CMAKE_BINARY_DIR}/include)
 
-add_executable(FirstCar ${SRC_FILES})
+file(GLOB SRC_FILES main.cpp source/*.cpp include/*.hpp include/*.h)
+
+add_executable(CarDecidingSystem ${SRC_FILES})
 
