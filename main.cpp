@@ -11,6 +11,6 @@ int main() {
 	string input;
 	string filename;
 	input_format();
-	cin >> input;
+	getline(cin, input);
 	process_input(input);
 }
