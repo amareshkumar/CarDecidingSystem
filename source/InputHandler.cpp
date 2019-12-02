@@ -1,4 +1,5 @@
 #include "../include/InputHandler.h"
+#include "../include/CarOptions.h"
 
 #include <iostream>
 #include <string>
@@ -6,6 +7,12 @@
 #include <unordered_map>
 
 using namespace std;
+
+CarOptionsToBuy cars;
+
+void EnterSetCriteria(unordered_map <string, string>& input) {
+	cars.set_buyer_criteria(input);
+}
 
 
 void process_input(string input) {
@@ -37,15 +44,22 @@ void process_input(string input) {
 		value = this_ele.substr(previous, current - previous);
 		input_value_pairs.insert(std::make_pair(key, value));
 	}
+
+	//set criteria
+	//EnterSetCriteria(input_value_pairs);
+	CarOptionsToBuy cars(input_value_pairs);
+
+
+	//Display the suggested cars: 
+	cars.suggested_cars();
 }
 
 
 
 void input_format() {
 	cout << "##### Car Deciding System #########\n\n";
-	cout << "Brand: <name> (opt), Budget: <in lacs> (req), Transmission: <manual/auto> (req), Gas-variant: <petrol/diesel> (req) , Color: <colorchoice> (opt), Build-type: <SUV/HATCHBACK> (opt)";
+	cout << "\nBrand: <name> (opt), Budget: <in lacs> (req), Transmission: <manual/auto> (req), FuelVariant: <petrol/diesel> (req) , Color: <colorchoice> (opt), VehicleType: <SUV/HATCHBACK> (opt)";
 
-	cout << "Enter the requirement in above form: "
-		"	 you can also provide json file path: ";
 
+	cout << "\nEnter the requirement in above form: \n\n";
 }

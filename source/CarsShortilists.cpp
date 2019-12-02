@@ -1,6 +1,7 @@
 #pragma once 
 #include "../include/CarOptions.h"
 
+//Concrete class Ford
 class Ford : public CarOptionsToBuy {
 private:
 	string uniqueness;
@@ -23,7 +24,7 @@ public:
 		return colors;
 	}
 	//specific to brand and cars variant, should return an enum FuelVariant 
-	virtual vector <FuelVariant> fuel_variant() const = 0 {
+	vector <FuelVariant> fuel_variant() {
 
 	}
 

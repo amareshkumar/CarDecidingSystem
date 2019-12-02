@@ -1,57 +1,65 @@
 #pragma once
 
-//Wishlist of cars
-enum Liked_Cars {
-	Maruti_Swift = 0,
-	Ford_FreeStyle = 1,
-	Tata_Nexon = 2,
-	Wolkswagon = 3,
-	Honda_WRV = 4,
-	Hyndai_Elite_i20 = 5
+#include "ICarBuyingOptions.h"
+
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+enum CarsBrandList {
+	Maruti, Ford, Tata, Volkswagon, Honda, Hyundai
 };
 
-//cars available colors 
 enum CarColors { RED, BLACk, WHITE, BLUE, YELLOW, SILVER };
 enum FuelVariant { PETROL, DIESEL, ELECTRIC, CNG };
 enum VehicleType { SUV, HATCHBACK, SEDAN, COMPACT, CUV };
 
-using namespace std;
-#include <iostream>
-//#include <list> 
-#include <vector>
 
-class CarOptionsToBuy {
-	double budget;
-	//subject to be observed from CarsConsidering
-	// bool special_discount;
 
-	// //list of observers 
-	// list < CarObservers> carobservers; 
+class CarOptionsToBuy : ICarBuyingOptions {
+private:
+	string m_brand;
+	VehicleType m_vehicle_type;
+	CarColors m_car_colors;
+	FuelVariant m_fuel_variant;
+	double m_budget;
+
+	//user input
+	unordered_map <string, string> m_buyer_criteria;
+
+	//container of car depending upon criteria
+	vector < vector <string> > shortlistedcars;
+
+
 public:
-	bool is_in_budget(double budget) {
-		if (getBudget() <= budget) return true; else return false;
+	CarOptionsToBuy() {
+		//check if m_buyer_criteria is set
+		if (!m_buyer_criteria.empty()) {
+			m_brand = m_buyer_criteria["Brand"];
+			m_vehicle_type = static_cast <VehicleType> (atoi((m_buyer_criteria["VehicleType"]).c_str()));
+			m_car_colors = static_cast <CarColors> (atoi((m_buyer_criteria["Color"]).c_str()));;
+			m_fuel_variant = static_cast <FuelVariant> (atoi((m_buyer_criteria["FuelVariant"]).c_str()));;
+			m_budget = stol(m_buyer_criteria["Budget"]);
+		}
 	}
 
-	double getBudget() {
-		return this->budget;
-	}
-	double setBudget(double budget) {
-		this->budget = budget;
-	}
-	void verdict() {
 
-		if (is_in_budget(getBudget())) { cout << "Yes, go for it" << endl; }
-		else { cout << "You could explore alternatives!"; }
+	explicit CarOptionsToBuy(unordered_map <string, string> user_input) : m_buyer_criteria(user_input) {
+		m_brand = user_input["Brand"];
+		m_vehicle_type = static_cast <VehicleType> (atoi((user_input["VehicleType"]).c_str()));
+		m_car_colors = static_cast <CarColors> (atoi((user_input["Color"]).c_str()));;
+		m_fuel_variant = static_cast <FuelVariant> (atoi((user_input["FuelVariant"]).c_str()));;
+		m_budget = stol(user_input["Budget"]);
 	}
 
-	//specific to class 
-	virtual string whats_unique_about_it(CarOptionsToBuy & car) = 0;
+	//implement inherited pure virtual functions
+	void set_buyer_criteria(unordered_map <string, string> user_input) {
+		m_buyer_criteria = user_input;
+	}
 
-	//specific to brand and cars variant, should return list of colors available 
-	virtual vector <CarColors> colors_available() const = 0;
-	//specific to brand and cars variant, should return an enum FuelVariant 
-	virtual vector <FuelVariant> fuel_variant() const = 0;
-
-	//striclty specific to vehicle 
-	virtual VehicleType vehicle_type() = 0;
+	void suggested_cars() {
+		for (auto v : shortlistedcars) { for (auto v_v : v) { cout << v_v << " "; }; }
+	}
 };
